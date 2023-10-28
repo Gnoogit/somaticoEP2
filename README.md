@@ -111,6 +111,12 @@ awk -F "\t" '{if($4>=20){print}}' \
 > WP312_coverageBed20x.bed
 ```
 
+**Converter Bed para Interval_list**
+
+```bash
+./gatk-4.2.2.0/gatk BedToIntervalList -I WP312_coverageBed20x.bed \
+-O WP312_coverageBed20x.interval_list -SD chr9.dict
+```
 
 ---
 # Roteiro Oficial - Simples
