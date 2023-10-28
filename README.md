@@ -1,26 +1,11 @@
 # Somático EP2
 
 ```
-Lucas Cruz
-Nathalia Correa
+Gabriel Oliveira
 Renato Puga
 ```
 ---
 # Roteiro Oficial - Completo
-
-Se for utilizar o mesmo Workspace do EP1, crie um diretório chamado hg38 e mova tudo para dentro dele. Depois, comece do zero e siga as etapas.
-
-```bash
-mkdir hg38
-```
-
-```bash
-mv * hg38
-```
-> Um alerta de que o diretório hg38 não pode ser movido para dentro dele deve aparecer.
-
-## Tenho o arquivo .FASTQ?
-
 
 ```bash
 brew install sratoolkit
@@ -51,6 +36,16 @@ time parallel-fastq-dump --sra-id SRR8856724 \
 --gzip
 ```
 
+Arquivo no formato FASTA do genoma humano hg19
+
+Diretório Download UCSC hg19:https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/
+chr9.fa.gz: https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr9.fa.gz
+
+```bash
+wget -c https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr9.fa.gz
+gunzip chr9.fa.gz
+```
+
 BWA para mapeamento dos arquivos FASTQ 
 
 ```
@@ -58,10 +53,6 @@ brew install bwa
 ```
 
 BWA index do arquivo chr9.fa.gz
-
-```
-gunzip chr9.fa.gz
-```
 
 ```
 bwa index chr9.fa
@@ -87,6 +78,38 @@ Remover duplicata de PCR
 samtools rmdup WP312_sorted.bam WP312_sorted_rmdup.bam
 ```
 
+**Gerando BED do arquivo BAM**
+
+```bash
+bedtools bamtobed -i WP312_sorted_rmdup.bam > WP312_sorted_rmdup.bed
+```
+
+```bash
+bedtools merge -i WP312_sorted_rmdup.bed > WP312_sorted_rmdup_merged.bed
+```
+
+```bash
+bedtools sort -i WP312_sorted_rmdup_merged.bed > WP312_sorted_rmdup_merged_sorted.bed
+```
+
+
+**Cobertura Média**
+
+```bash
+bedtools coverage -a WP312_sorted_rmdup_merged_sorted.bed \
+-b WP312_sorted_rmdup.bam -mean \
+> WP312_coverageBed.bed
+```
+
+
+
+**Filtro por total de reads >=20**
+
+```bash
+cat WP312_coverageBed.bed | \
+awk -F "\t" '{if($4>=20){print}}' \
+> WP312_coverageBed20x.bed
+```
 
 
 ---
@@ -118,14 +141,7 @@ wget -c  https://storage.googleapis.com/gatk-best-practices/somatic-b37/af-only-
 ```
 
 
-> Arquivo no formato FASTA do genoma humano hg19
 
-Diretório Download UCSC hg19:https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/
-chr9.fa.gz: https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr9.fa.gz
-
-```bash
-wget -c https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr9.fa.gz
-```
 
 ---
 
