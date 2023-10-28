@@ -185,7 +185,7 @@ O arquivo `af-only-gnomad.raw.sites.vcf` (do bucket somatic-b37) não tem o `chr
 
 ```bash
 grep "\#" af-only-gnomad.raw.sites.vcf > af-only-gnomad.raw.sites.chr.vcf
-grep  "^9" af-only-gnomad.raw.sites.vcf |  awk '{print("chr"$0)}' >> af-only-gnomad.raw.sites.chr.vcf
+grep "^9" af-only-gnomad.raw.sites.vcf |  awk '{print("chr"$0)}' >> af-only-gnomad.raw.sites.chr.vcf
 ```
 
 **indexing**
@@ -197,7 +197,7 @@ tabix -p vcf af-only-gnomad.raw.sites.chr.vcf.gz
 
 ```bash
 grep "\#" Mutect2-WGS-panel-b37.vcf > Mutect2-WGS-panel-b37.chr.vcf 
-grep  "^9" Mutect2-WGS-panel-b37.vcf |  awk '{print("chr"$0)}' >> Mutect2-WGS-panel-b37.chr.vcf 
+grep "^9" Mutect2-WGS-panel-b37.vcf |  awk '{print("chr"$0)}' >> Mutect2-WGS-panel-b37.chr.vcf 
 ```
 
 ```bash
