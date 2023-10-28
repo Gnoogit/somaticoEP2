@@ -251,8 +251,31 @@ Download vcf para comparar
 
 ```bash
 git clone https://github.com/circulosmeos/gdown.pl.git
-./gdown.pl/gdown.pl https://drive.google.com/file/d/1pTMpZ2eIboPHpiLf22gFIQbXU2Ow26_E/view?usp=drive_link WP312.filtered.chr.vcf.gz.tbi
 ./gdown.pl/gdown.pl https://drive.google.com/file/d/10utrBVW-cyoFPt5g95z1gQYQYTfXM4S7/view?usp=drive_link WP312.filtered.chr.vcf.gz
+```
+
+Vamos adicionar o caracter `chr` no arquivo VCF antigo e salvar um novo.
+
+```bash
+# pegando apenas o cabeçalho
+zgrep "\#" WP312.filtered.vcf.gz > header.txt
+```
+
+```bash
+zgrep -v "\#" WP312.filtered.vcf.gz | awk '{print("chr"$0)}' > variants.txt
+```
+
+```bash
+cat header.txt variants.txt > WP312.filtered.chr.vcf
+```
+
+```bash
+rm WP312.filtered.chr.vcf.gz
+```
+
+```bash
+bgzip WP312.filtered.chr.vcf
+tabix -p vcf WP312.filtered.chr.vcf.gz
 ```
 
 ```bash
