@@ -1,16 +1,26 @@
 # Somático EP2
 
 ```
-Gabriel Nascimento de Oliveira
+Lucas Cruz
+Nathalia Correa
+Renato Puga
 ```
 ---
 # Roteiro Oficial - Completo
 
+Se for utilizar o mesmo Workspace do EP1, crie um diretório chamado hg38 e mova tudo para dentro dele. Depois, comece do zero e siga as etapas.
+
+```bash
+mkdir hg38
+```
+
+```bash
+mv * hg38
+```
+> Um alerta de que o diretório hg38 não pode ser movido para dentro dele deve aparecer.
+
 ## Tenho o arquivo .FASTQ?
 
-## Não?
-
-Instalar (sratoolskit) e fazer Download do arquivo WP312.
 
 ```bash
 brew install sratoolkit
@@ -21,27 +31,24 @@ pip install parallel-fastq-dump
 ```
 
 ```bash
-vdb-config -i
+wget -c https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-ubuntu64.tar.gz
 ```
-
-Apertar as teclas "A", "e", "x", "y", e "o" nesta sequência.
+```bash
+tar -zxvf sratoolkit.3.0.0-ubuntu64.tar.gz
+```
+```bash
+export PATH=$PATH://workspace/somaticoEP2/sratoolkit.3.0.0-ubuntu64/bin/
+```
+```bash
+echo "Aexyo" | sratoolkit.3.0.0-ubuntu64/bin/vdb-config -i
+```
 
 ```bash
 time parallel-fastq-dump --sra-id SRR8856724 \
---threads 4 \
+--threads 10 \
 --outdir ./ \
 --split-files \
 --gzip
-```
-
-> Arquivo no formato FASTA do genoma humano hg19
-
-Diretório Download UCSC hg19:https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/
-chr9.fa.gz: https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr9.fa.gz
-
-```bash
-wget -c https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr9.fa.gz
-gunzip chr9.fa.gz
 ```
 
 BWA para mapeamento dos arquivos FASTQ 
@@ -51,6 +58,10 @@ brew install bwa
 ```
 
 BWA index do arquivo chr9.fa.gz
+
+```
+gunzip chr9.fa.gz
+```
 
 ```
 bwa index chr9.fa
@@ -70,6 +81,12 @@ Combinar com pipes: bwa + samtools view e sort
 NOME=WP312; Biblioteca=Nextera; Plataforma=illumina;
 bwa mem -t 10 -M -R "@RG\tID:$NOME\tSM:$NOME\tLB:$Biblioteca\tPL:$Plataforma" chr9.fa SRR8856724_1.fastq.gz SRR8856724_2.fastq.gz | samtools view -F4 -Sbu -@2 - | samtools sort -m4G -@2 -o WP312_sorted.bam
 ```
+
+Remover duplicata de PCR
+```bash
+samtools rmdup WP312_sorted.bam WP312_sorted_rmdup.bam
+```
+
 
 
 ---
@@ -100,6 +117,18 @@ wget -c  https://storage.googleapis.com/gatk-best-practices/somatic-b37/af-only-
 wget -c  https://storage.googleapis.com/gatk-best-practices/somatic-b37/af-only-gnomad.raw.sites.vcf.idx
 ```
 
+
+> Arquivo no formato FASTA do genoma humano hg19
+
+Diretório Download UCSC hg19:https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/
+chr9.fa.gz: https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr9.fa.gz
+
+```bash
+wget -c https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr9.fa.gz
+```
+
+---
+
 # Adicionando chr nos VCFs do Gnomad e PoN
 
 O arquivo `af-only-gnomad.raw.sites.vcf` (do bucket somatic-b37) não tem o `chr`na frente do nome do cromossomo. Precisamos adicionar para não gerar conflito de contigs de referência na hora de executar o GATK.
@@ -128,42 +157,9 @@ tabix -p vcf Mutect2-WGS-panel-b37.chr.vcf.gz
 
 # GATK4 - Mutect Call (Refs hg19 com chr)
 
-**Download**
-
-```
-wget -c https://github.com/broadinstitute/gatk/releases/download/4.2.2.0/gatk-4.2.2.0.zip
-```
-
-**Descompactar**
-
-```bash
-unzip gatk-4.2.2.0.zip 
-```
-
-**Gerar arquivo .dict**
-
-```bash
-./gatk-4.2.2.0/gatk CreateSequenceDictionary -R chr9.fa -O chr9.dict
-```
-
-**Gerar interval_list do chr9**
-
-```bash
-./gatk-4.2.2.0/gatk ScatterIntervalsByNs -R chr9.fa -O chr9.interval_list -OT ACGT
-```
-
-**Converter Bed para Interval_list**
-
-```bash
-./gatk-4.2.2.0/gatk BedToIntervalList -I WP312_coverageBed20x.bed \
--O WP312_coverageBed20x.interval_list -SD chr9.dict
-```
-
-**Mutect Call**
-
 ```bash
 ./gatk-4.2.2.0/gatk GetPileupSummaries \
-	-I WP312_sorted.bam  \
+	-I WP312_sorted_rmdup.bam  \
 	-V af-only-gnomad.raw.sites.chr.vcf.gz  \
 	-L WP312_coverageBed20x.interval_list \
 	-O WP312.table
