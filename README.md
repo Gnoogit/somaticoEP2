@@ -251,7 +251,7 @@ Download vcf para comparar
 
 ```bash
 git clone https://github.com/circulosmeos/gdown.pl.git
-./gdown.pl/gdown.pl https://drive.google.com/file/d/10utrBVW-cyoFPt5g95z1gQYQYTfXM4S7/view?usp=drive_link WP312.filtered.vcf.gz
+./gdown.pl/gdown.pl https://drive.google.com/file/d/1_u20kcWPHinPb8QAe0WhRh7dt22Q5HGS/view?usp=drive_link WP312.filtered.vcf.gz
 ```
 
 Vamos adicionar o caracter `chr` no arquivo VCF antigo e salvar um novo.
