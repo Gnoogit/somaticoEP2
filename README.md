@@ -159,9 +159,11 @@ unzip gatk-4.2.2.0.zip
 -O WP312_coverageBed20x.interval_list -SD chr9.dict
 ```
 
+**Mutect Call**
+
 ```bash
 ./gatk-4.2.2.0/gatk GetPileupSummaries \
-	-I WP312_sorted_rmdup.bam  \
+	-I WP312_sorted.bam  \
 	-V af-only-gnomad.raw.sites.chr.vcf.gz  \
 	-L WP312_coverageBed20x.interval_list \
 	-O WP312.table
