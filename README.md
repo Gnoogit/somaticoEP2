@@ -247,10 +247,15 @@ tabix -p vcf Mutect2-WGS-panel-b37.chr.vcf.gz
 -O WP312.filtered.pon.vcf.gz
 ```
 
-Download vcf para comparar
+Clonar ferramenta drive download
 
 ```bash
 git clone https://github.com/circulosmeos/gdown.pl.git
+```
+
+Download vcf para comparar
+
+```bash
 ./gdown.pl/gdown.pl https://drive.google.com/file/d/1_u20kcWPHinPb8QAe0WhRh7dt22Q5HGS/view?usp=drive_link WP312.filtered.vcf.gz
 ```
 
