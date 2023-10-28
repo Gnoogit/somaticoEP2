@@ -34,8 +34,10 @@ pip install parallel-fastq-dump
 ```
 
 ```bash
-echo "Aexyo" | vdb-config -i
+vdb-config -i
 ```
+
+Apertar as teclas "A", "e", "x", "y", e "o" nesta sequência.
 
 ```bash
 time parallel-fastq-dump --sra-id SRR8856724 \
