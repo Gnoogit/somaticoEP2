@@ -279,6 +279,10 @@ tabix -p vcf WP312.filtered.chr.vcf.gz
 ```
 
 ```bash
+brew install vcftools
+```
+
+```bash
 vcf-compare WP312.filtered.pon.vcf.gz ../WP312.filtered.chr.vcf.gz 
 ```
 
