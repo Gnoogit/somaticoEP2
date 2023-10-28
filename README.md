@@ -78,6 +78,11 @@ Remover duplicata de PCR
 samtools rmdup WP312_sorted.bam WP312_sorted_rmdup.bam
 ```
 
+Indexando o BAM
+```bash
+samtools index WP312_sorted_rmdup.bam 
+```
+
 **Gerando BED do arquivo BAM**
 
 ```bash
