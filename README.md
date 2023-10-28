@@ -115,9 +115,7 @@ awk -F "\t" '{if($4>=20){print}}' \
 > WP312_coverageBed20x.bed
 ```
 
-**Converter Bed para Interval_list**
-
-**Download**
+**Download GATK**
 
 ```
 wget -c https://github.com/broadinstitute/gatk/releases/download/4.2.2.0/gatk-4.2.2.0.zip
@@ -140,6 +138,8 @@ unzip gatk-4.2.2.0.zip
 ```bash
 ./gatk-4.2.2.0/gatk ScatterIntervalsByNs -R chr9.fa -O chr9.interval_list -OT ACGT
 ```
+
+**Converter Bed para Interval_list**
 
 ```bash
 ./gatk-4.2.2.0/gatk BedToIntervalList -I WP312_coverageBed20x.bed \
