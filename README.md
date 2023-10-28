@@ -81,6 +81,10 @@ samtools rmdup WP312_sorted.bam WP312_sorted_rmdup.bam
 **Gerando BED do arquivo BAM**
 
 ```bash
+brew install bedtools
+```
+
+```bash
 bedtools bamtobed -i WP312_sorted_rmdup.bam > WP312_sorted_rmdup.bed
 ```
 
