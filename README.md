@@ -257,12 +257,11 @@ git clone https://github.com/circulosmeos/gdown.pl.git
 Vamos adicionar o caracter `chr` no arquivo VCF antigo e salvar um novo.
 
 ```bash
-# pegando apenas o cabeçalho
-zgrep "\#" WP312.filtered.vcf.gz > header.txt
+zgrep "\#" WP312.filtered.chr.vcf.gz > header.txt
 ```
 
 ```bash
-zgrep -v "\#" WP312.filtered.vcf.gz | awk '{print("chr"$0)}' > variants.txt
+zgrep -v "\#" WP312.filtered.chr.vcf.gz | awk '{print("chr"$0)}' > variants.txt
 ```
 
 ```bash
