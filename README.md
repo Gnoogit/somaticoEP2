@@ -34,6 +34,16 @@ time parallel-fastq-dump --sra-id SRR8856724 \
 --gzip
 ```
 
+> Arquivo no formato FASTA do genoma humano hg19
+
+Diretório Download UCSC hg19:https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/
+chr9.fa.gz: https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr9.fa.gz
+
+```bash
+wget -c https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr9.fa.gz
+gunzip chr9.fa.gz
+```
+
 BWA para mapeamento dos arquivos FASTQ 
 
 ```
@@ -41,11 +51,6 @@ brew install bwa
 ```
 
 BWA index do arquivo chr9.fa.gz
-
-```
-wget -c https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr9.fa.gz
-gunzip chr9.fa.gz
-```
 
 ```
 bwa index chr9.fa
@@ -94,18 +99,6 @@ wget -c  https://storage.googleapis.com/gatk-best-practices/somatic-b37/af-only-
 ```bash
 wget -c  https://storage.googleapis.com/gatk-best-practices/somatic-b37/af-only-gnomad.raw.sites.vcf.idx
 ```
-
-
-> Arquivo no formato FASTA do genoma humano hg19
-
-Diretório Download UCSC hg19:https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/
-chr9.fa.gz: https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr9.fa.gz
-
-```bash
-wget -c https://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr9.fa.gz
-```
-
----
 
 # Adicionando chr nos VCFs do Gnomad e PoN
 
